@@ -17,6 +17,7 @@ class CognitoClient
     const INVALID_PASSWORD = 'InvalidPasswordException';
     const CODE_MISMATCH = 'CodeMismatchException';
     const EXPIRED_CODE = 'ExpiredCodeException';
+    const USER_NOT_CONFIRMED = 'UserNotConfirmedException';
 
     /**
      * @var CognitoIdentityProviderClient
@@ -83,6 +84,9 @@ class CognitoClient
             if ($exception->getAwsErrorCode() === self::RESET_REQUIRED ||
                 $exception->getAwsErrorCode() === self::USER_NOT_FOUND) {
                 return false;
+            }
+            if( $exception->getAwsErrorCode() == self::USER_NOT_CONFIRMED) {
+                return true;
             }
 
             throw $exception;
@@ -372,6 +376,10 @@ class CognitoClient
 
             throw $e;
         }
+    }
+
+    public function GetCognitoUser($email) {
+        return $this->getUser($email);
     }
 
     // HELPER FUNCTIONS

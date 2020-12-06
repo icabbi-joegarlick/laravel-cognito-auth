@@ -18,7 +18,9 @@ trait VerifiesEmails
      */
     public function show(Request $request)
     {
-        return view('black-bits/laravel-cognito-auth::verify');
+        return $request->user()->hasVerifiedEmail()
+        ? redirect($this->redirectPath())
+        : view('black-bits/laravel-cognito-auth::verify');
     }
 
     /**
